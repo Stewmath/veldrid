@@ -1902,6 +1902,10 @@ namespace Veldrid.OpenGLBindings
 
             LoadFunction("glReadPixels", out p_glReadPixels);
 
+            LoadFunction("glViewport", out p_glViewport);
+            LoadFunction("glDepthRangef", out p_glDepthRangef);
+            LoadFunction("glScissor", out p_glScissor);
+
             if (!gles)
             {
                 LoadFunction("glFramebufferTexture1D", out p_glFramebufferTexture1D);
@@ -1916,9 +1920,6 @@ namespace Veldrid.OpenGLBindings
             }
             else
             {
-                LoadFunction("glViewport", out p_glViewport);
-                LoadFunction("glDepthRangef", out p_glDepthRangef);
-                LoadFunction("glScissor", out p_glScissor);
                 LoadFunction("glCopyImageSubData", out p_glCopyImageSubData);
                 if (p_glCopyImageSubData == null)
                 {

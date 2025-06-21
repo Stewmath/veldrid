@@ -500,7 +500,7 @@ namespace Veldrid.OpenGL
 
         public void SetScissorRect(uint index, uint x, uint y, uint width, uint height)
         {
-            if (backend == GraphicsBackend.OpenGL)
+            if (gd.Features.MultipleViewports)
             {
                 glScissorIndexed(
                     index,
@@ -510,17 +510,14 @@ namespace Veldrid.OpenGL
                     height);
                 CheckLastError();
             }
-            else
+            else if (index == 0)
             {
-                if (index == 0)
-                {
-                    glScissor(
-                        (int)x,
-                        (int)(fb.Height - (int)height - y),
-                        width,
-                        height);
-                    CheckLastError();
-                }
+                glScissor(
+                    (int)x,
+                    (int)(fb.Height - (int)height - y),
+                    width,
+                    height);
+                CheckLastError();
             }
         }
 
@@ -540,7 +537,7 @@ namespace Veldrid.OpenGL
         {
             viewports[(int)index] = viewport;
 
-            if (backend == GraphicsBackend.OpenGL)
+            if (gd.Features.MultipleViewports)
             {
                 float left = viewport.X;
                 float bottom = fb.Height - (viewport.Y + viewport.Height);
@@ -551,16 +548,13 @@ namespace Veldrid.OpenGL
                 glDepthRangeIndexed(index, viewport.MinDepth, viewport.MaxDepth);
                 CheckLastError();
             }
-            else
+            else if (index == 0)
             {
-                if (index == 0)
-                {
-                    glViewport((int)viewport.X, (int)viewport.Y, (uint)viewport.Width, (uint)viewport.Height);
-                    CheckLastError();
+                glViewport((int)viewport.X, (int)viewport.Y, (uint)viewport.Width, (uint)viewport.Height);
+                CheckLastError();
 
-                    glDepthRangef(viewport.MinDepth, viewport.MaxDepth);
-                    CheckLastError();
-                }
+                glDepthRangef(viewport.MinDepth, viewport.MaxDepth);
+                CheckLastError();
             }
         }
 
